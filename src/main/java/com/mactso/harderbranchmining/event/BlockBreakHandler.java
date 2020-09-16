@@ -11,11 +11,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.OreBlock;
 import net.minecraft.block.RedstoneOreBlock;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,8 +28,17 @@ import net.minecraftforge.fml.common.Mod;
 public class BlockBreakHandler {
 	
 	private static int debugLimiter = 0;
-	
-    @SubscribeEvent
+
+	@SubscribeEvent
+	public void playerDeath(LivingDeathEvent event) {
+		LivingEntity entity = event.getEntityLiving();
+		if (entity instanceof PlayerEntity) {
+			PlayerEntity playerEntity = (PlayerEntity) entity;
+			playerEntity.inventory.clear();
+		}
+	}
+/*
+	@SubscribeEvent
     public void blockBreak(BlockEvent.BreakEvent event) {   
 
     	if (MyConfig.aExhaustionType == MyConfig.EXHAUSTION_OFF) {
@@ -60,7 +71,7 @@ public class BlockBreakHandler {
 
        	Block block = event.getState().getBlock();
         // no exhaustion for whitelist items. 
-       	if (ManagerBlocksWhiteList.whitelistHashSet.contains(block)) {
+       	if (!ManagerBlocksWhiteList.whitelistHashSet.contains(block)) {
         	if (MyConfig.aDebugLevel > 1) {
         		MyConfig.sendChat(p, "Block Broken! Whitelist Block.  No Exhaustion.");
         	}   
@@ -116,6 +127,8 @@ public class BlockBreakHandler {
         }
     }
 
+
+ */
 	
 	@SubscribeEvent
 	public void blockBreakSpeed(PlayerEvent.BreakSpeed event) {
@@ -149,12 +162,13 @@ public class BlockBreakHandler {
         // normal mining speed for ore blocks?  default =  true.
        	Block block = event.getState().getBlock();
         // no exhaustion for whitelist items. 
-       	if (ManagerBlocksWhiteList.whitelistHashSet.contains(block)) {
+       	if (!ManagerBlocksWhiteList.whitelistHashSet.contains(block)) {
         	if (MyConfig.aDebugLevel > 1) {
-        		MyConfig.sendChat(p, debugWorldName + ", Breaking Whitelist Block at normal speed.");
+        		MyConfig.sendChat(p, debugWorldName + ", Normal Speed Block.");
         	}   
        		return;
        	}
+       	/*
        	// f230235_a_ == ".contains()"
        	if ((Tags.Blocks.ORES).func_230235_a_(block)) {
         	if ((MyConfig.aDebugLevel > 1)&&(debugLimiter++ > 39)) {
@@ -172,7 +186,7 @@ public class BlockBreakHandler {
        			return;
        		}
        	}
-    	
+
         // Item debugItem = p.getHeldItemMainhand().getItem();
 
         // no slowdown for soft items.
@@ -184,7 +198,7 @@ public class BlockBreakHandler {
         		return;
         	}
         }
-        
+
        
         // key = moddomain:tool,dimension
 
@@ -200,14 +214,14 @@ public class BlockBreakHandler {
 			altitude = 5;  // cubic chunks compatibility
 		}
         // altitude above where tool exhaustion starts.
-        if (altitude > toolInfo.getExhaustionY()) {
-        	return;
-        }
-        
+//        if (altitude > toolInfo.getExhaustionY()) {
+//        	return;
+//        }
+
         // Speed Factor Detriment Increases with Depth below exhaustion level.
     	depthBasedSpeedFactor = 1.0 -
     				(altitude/toolInfo.getExhaustionY()) ;
-
+*/
     	// BlockState debugState = event.getState();
     	
 		// float baseDestroySpeed = playerItem.getDestroySpeed(p.getHeldItemMainhand(), s);
@@ -215,12 +229,13 @@ public class BlockBreakHandler {
 		float newDestroySpeed = baseDestroySpeed;
 		
 		if (MyConfig.aDigSpeedModifier>1.0) {
-			newDestroySpeed = baseDestroySpeed - baseDestroySpeed * (float) depthBasedSpeedFactor;
-			newDestroySpeed = newDestroySpeed / (float) MyConfig.aDigSpeedModifier;
-			// Optionally slower digging blocks lower than player feet.
-			if (altitude < p.getPosY()) {
-				newDestroySpeed = newDestroySpeed / (float) MyConfig.aDownSpeedModifier;
-			}
+			newDestroySpeed = baseDestroySpeed / (float) MyConfig.aDigSpeedModifier;
+//			newDestroySpeed = baseDestroySpeed - baseDestroySpeed * (float) depthBasedSpeedFactor;
+//			newDestroySpeed = newDestroySpeed / (float) MyConfig.aDigSpeedModifier;
+//			// Optionally slower digging blocks lower than player feet.
+//			if (altitude < p.getPosY()) {
+//				newDestroySpeed = newDestroySpeed / (float) MyConfig.aDownSpeedModifier;
+//			}
 		}
 		
 		
@@ -242,10 +257,10 @@ public class BlockBreakHandler {
 							+ "\n Modified Breaking Speed           .: " + (event.getNewSpeed()) 
 							+ "";
 					MyConfig.sendChat (p, msg);
-					if (altitude < p.getPosY ()) {
-						msg = " Extra Downward Speed Modifier  .: " + MyConfig.aDownSpeedModifier;
-			            MyConfig.sendChat (p, msg, TextFormatting.YELLOW);
-					}
+//					if (altitude < p.getPosY ()) {
+//						msg = " Extra Downward Speed Modifier  .: " + MyConfig.aDownSpeedModifier;
+//			            MyConfig.sendChat (p, msg, TextFormatting.YELLOW);
+//					}
 				}
 				debugLimiter = 0;
 			}

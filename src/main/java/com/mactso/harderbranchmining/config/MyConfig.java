@@ -53,17 +53,7 @@ public class MyConfig
 		+ "minecraft:iron_pickaxe,-1,124,2.2;"
 		+ "minecraft:diamond_pickaxe,-1,124,1.2;"
 		;		
-		public final String defaultBlocksWhiteList6464 = 
-				    "ore_stone_variants:coal_ore;"+
-					"ore_stone_variants:iron_ore;"+
-					"ore_stone_variants:gold_ore;"+
-					"ore_stone_variants:diamond_ore;"+
-					"ore_stone_variants:lapis_ore;"+
-					"ore_stone_variants:redstone_ore;"+
-					"rockcandy:candy_ore;"+
-					"minecraft:oak_planks;"+
-					"minecraft:oak_fence;"
-			;	
+		public final String defaultBlocksWhiteList6464 = "minecraft:stone;minecraft:andesite;minecraft:granite;minecraft:diorite;";
 		
 		public Server(ForgeConfigSpec.Builder builder) {
 
@@ -71,7 +61,7 @@ public class MyConfig
 			exhaustionType= builder
 					.comment("Exhaustion Type: 0 = None-Speedonly, 1=Proportional, 2=Fixed")
 					.translation(Main.MODID + ".config." + "exhaustionType")
-					.defineInRange("exhaustionType", () -> 1, 0, 2);
+					.defineInRange("exhaustionType", () -> 0, 0, 2);
 
 			debugLevel = builder
 					.comment("Debug Level: 0 = Off, 1 = Log, 2 = Chat+Log")
@@ -81,12 +71,12 @@ public class MyConfig
 			digSpeedModifier = builder
 					.comment("Digging Speed Modifer: (none) 1.0 to (max) 32.0")
 					.translation(Main.MODID + ".config." + "aDigSpeedModifier")
-					.defineInRange("aDigSpeedModifier", () -> 1.09, 1.0, 32.0);
+					.defineInRange("aDigSpeedModifier", () -> 50.0, 1.0, 100.0);
 			
 			downExhaustion = builder
 					.comment("Down Speed Modifer: (none) 1.0 to (max) 32.0")
 					.translation(Main.MODID + ".config." + "aDownExhaustion")
-					.defineInRange("aDownExhaustion", () -> 1.03, 1.0, 32.0);
+					.defineInRange("aDownExhaustion", () -> 1.00, 1.0, 32.0);
 
 			normalOre = builder
 					.comment("Normal Ore Behavior: true")

@@ -41,11 +41,11 @@ public class Main
     @Mod.EventBusSubscriber()
     public static class ForgeEvents
     {
-		@SubscribeEvent 		
-		public static void onCommandsRegistry(final RegisterCommandsEvent event) {
-			System.out.println("HarderBranchMining: Registering Commands");
-			HarderBranchMiningCommands.register(event.getDispatcher());			
-		}
+//		@SubscribeEvent
+//		public static void onCommandsRegistry(final RegisterCommandsEvent event) {
+//			System.out.println("HarderBranchMining: Registering Commands");
+//			HarderBranchMiningCommands.register(event.getDispatcher());
+//		}
 
 		@SubscribeEvent 
 		public static void onServerStarting (FMLServerStartingEvent event) {
